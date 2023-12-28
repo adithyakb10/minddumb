@@ -3,7 +3,7 @@ import ejs from "ejs";
 
 const app = express();
 const port = 3000;
-app.use(express.static("routes"));
+app.use(express.static("public"));
 
 // Routes
 app.get("/", (req, res) => {
@@ -11,5 +11,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });
