@@ -2,8 +2,10 @@ import express from "express";
 import ejs from "ejs";
 import session from "express-session";
 import passport from "passport";
+import passportLocalMongoose from "passport-local-mongoose";
 import { Strategy } from "passport-google-oauth20";
 import mongoose from "mongoose";
+import bodyParser from "body-parser";
 import "dotenv/config";
 import findOrCreate from "mongoose-findorcreate";
 const { Schema } = mongoose;
@@ -11,29 +13,30 @@ const GoogleStrategy = Strategy;
 
 const app = express();
 const port = 3000;
+
 app.use(express.static("public"));
+app.set("view engine", "ejs");
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 app.use(
   session({
     secret: "keyboard cat",
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
+    saveUninitialized: false,
   })
 );
 
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-  done(null, user);
-});
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Database
 main().catch((err) => console.log(err));
 
 async function main() {
-  mongoose.connect("mongodb://127.0.0.1:2717");
+  await mongoose.connect("mongodb://127.0.0.1:2717/Users");
   console.log("Connected to the DataBase Successfully");
 }
 
@@ -45,10 +48,23 @@ const userSchema = new mongoose.Schema({
 });
 
 //Plugins
+userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
 //Model
-const User = mongoose.model("User", userSchema);
+const User = new mongoose.model("User", userSchema);
+passport.use(User.createStrategy());
+
+passport.serializeUser(function (user, done) {
+  done(null, user._id);
+  console.log(user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  const user = User.findById(id).exec();
+  console.log(user);
+  done(err, user);
+});
 
 passport.use(
   new GoogleStrategy(
@@ -75,8 +91,8 @@ app.get("/secrets", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  if (req.isAuthenticated) {
-    res.send("<h1>Hello!!</h1>");
+  if (req.isAuthenticated()) {
+    res.render("home.ejs");
   } else {
     res.redirect("/login");
   }
