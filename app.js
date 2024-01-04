@@ -33,11 +33,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Database
-main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:2717/Users");
-  console.log("Connected to the DataBase Successfully");
+  try {
+    await mongoose.connect("mongodb://127.0.0.1:2717/Users");
+    console.log("Connected to the DataBase Successfully");
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 //Schema
