@@ -48,6 +48,7 @@ const userSchema = new mongoose.Schema({
   name: String,
   googleId: String,
   message: String,
+  picture: String,
 });
 
 //Plugins
@@ -59,13 +60,13 @@ const User = new mongoose.model("User", userSchema);
 passport.use(User.createStrategy());
 
 passport.serializeUser(function (user, done) {
-  done(null, user._id);
-  console.log(user._id);
+  done(null, user.id);
+  // console.log(user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = User.findById(id).exec();
-  console.log(user);
+  const user = await User.findById(id).exec();
+  // console.log(user);
   done(err, user);
 });
 
@@ -77,9 +78,17 @@ passport.use(
       callbackURL: "http://localhost:3000/auth/google/minddump",
     },
     function (accessToken, refreshToken, profile, cb) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
+      // console.log(profile);
+      User.findOrCreate(
+        {
+          googleId: profile.id,
+          name: profile.name.givenName,
+          picture: profile._json.picture,
+        },
+        function (err, user) {
+          return cb(err, user);
+        }
+      );
     }
   )
 );
@@ -93,9 +102,10 @@ app.get("/secrets", (req, res) => {
   res.render("secrets.ejs");
 });
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
-    res.render("home.ejs");
+    const user = await User.findById(req.user.id).exec();
+    res.render("home.ejs", { user: user });
   } else {
     res.redirect("/login");
   }

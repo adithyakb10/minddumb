@@ -8,8 +8,8 @@
   </head>
   <body>
     <div class="container">
-      <img src="./assets/anya.png" alt="profile pic" />
-      <p>Welcome, Adithya</p>
+      <img src="<%= user.picture %>" alt="profile pic" />
+      <p>Welcome, <%= user.name %></p>
       <h1>What's on your mind?</h1>
       <form action="/submit" method="post">
         <textarea
