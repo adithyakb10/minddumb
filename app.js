@@ -87,7 +87,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/google/minddump",
+      callbackURL: "https://minddump.onrender.com//auth/google/minddump",
     },
     function (accessToken, refreshToken, profile, cb) {
       // console.log(profile);
