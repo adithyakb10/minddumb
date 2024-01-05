@@ -45,10 +45,12 @@ async function main() {
 
 //Schema
 const userSchema = new mongoose.Schema({
+  username: String,
   name: String,
   googleId: String,
-  message: String,
   picture: String,
+  messages: Array,
+  privateMessages: Array,
 });
 
 //Plugins
@@ -84,6 +86,7 @@ passport.use(
           googleId: profile.id,
           name: profile.name.givenName,
           picture: profile._json.picture,
+          username: profile.displayName,
         },
         function (err, user) {
           return cb(err, user);
@@ -125,6 +128,31 @@ app.get(
     res.redirect("/");
   }
 );
+
+app.post("/submit", async (req, res) => {
+  try {
+    const message = req.body.thought;
+    const user = await User.findById(req.user.id).exec();
+    // console.log(user);
+    const date = new Date();
+    const formattedDate = date.toLocaleString();
+
+    //if message is private
+    if (req.body.isPrivate) {
+      user.privateMessages.push({ message, formattedDate });
+      await user.save();
+      res.redirect("/");
+    }
+    // if message is public
+    else {
+      user.messages.push({ message, formattedDate });
+      await user.save();
+      res.redirect("/");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);

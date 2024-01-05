@@ -19,12 +19,46 @@
           cols="30"
           rows="10"
         ></textarea>
-        <button type="submit">Submit</button>
+        <div class="submit-box">
+          <div class="switch">
+            <input
+              value="true"
+              name="isPrivate"
+              id="checkbox1"
+              class="look"
+              type="checkbox"
+            />
+            <label for="checkbox1"></label>
+            <p>Private</p>
+          </div>
+          <button id="submit" type="submit">Submit</button>
+        </div>
       </form>
     </div>
     <p id="title">Your Messages!</p>
+    <p>Public Messages!</p>
     <div class="thoughts">
-      <p>I Love Coding</p>
+      <% user.messages.forEach(function(object){ %>
+      <div class="messages">
+        <div class="header">
+          <img src="<%= user.picture %>" alt="message" />
+          <p><%= object.formattedDate %></p>
+        </div>
+        <p class="message"><%= object.message %></p>
+      </div>
+      <% }); %>
+    </div>
+    <p>Private Messages!</p>
+    <div class="thoughts">
+      <% user.privateMessages.forEach(function(object){ %>
+      <div class="messages">
+        <div class="header">
+          <img src="<%= user.picture %>" alt="message" />
+          <p><%= object.formattedDate %></p>
+        </div>
+        <p class="message"><%= object.message %></p>
+      </div>
+      <% }); %>
     </div>
   </body>
 </html>
