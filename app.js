@@ -25,11 +25,12 @@ app.use(
 
 app.use(
   session({
-    cookie: { maxAge: 86400000, secure: true },
+    cookie: { maxAge: 86400000, sameSite: "none" },
     resave: false,
     store: MongoStore.create({
-      mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/?retryWrites=true`,
+      mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true`,
       collectionName: "sessions",
+      dbName: "Users",
     }),
     secret: process.env.SECRET,
     saveUninitialized: false,
@@ -44,7 +45,7 @@ app.use(passport.session());
 async function main() {
   try {
     await mongoose.connect(
-      `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/?retryWrites=true&w=majority`
+      `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true&w=majority`
     );
     console.log("Connected to the DataBase Successfully");
   } catch (err) {
@@ -72,13 +73,13 @@ passport.use(User.createStrategy());
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
-  // console.log(user.id);
+  console.log(user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id).exec();
-  // console.log(user);
-  done(null, user);
+  const user = await User.findById(id);
+  console.log(user);
+  done(err, user);
 });
 
 passport.use(
