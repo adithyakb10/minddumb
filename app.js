@@ -25,7 +25,7 @@ app.use(
 
 app.use(
   session({
-    cookie: { maxAge: 86400000, sameSite: "none" },
+    cookie: { maxAge: 86400000 },
     resave: false,
     store: MongoStore.create({
       mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true`,
