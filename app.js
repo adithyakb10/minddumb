@@ -1,6 +1,7 @@
 import express from "express";
 import ejs from "ejs";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import passport from "passport";
 import passportLocalMongoose from "passport-local-mongoose";
 import { Strategy } from "passport-google-oauth20";
@@ -21,10 +22,16 @@ app.use(
     extended: true,
   })
 );
+
 app.use(
   session({
-    secret: "keyboard cat",
+    cookie: { maxAge: 86400000, secure: true },
     resave: false,
+    store: MongoStore.create({
+      mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/?retryWrites=true`,
+      collectionName: "sessions",
+    }),
+    secret: process.env.SECRET,
     saveUninitialized: false,
   })
 );
@@ -37,7 +44,7 @@ app.use(passport.session());
 async function main() {
   try {
     await mongoose.connect(
-      `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/?retryWrites=true&w=majority/Users`
+      `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/?retryWrites=true&w=majority`
     );
     console.log("Connected to the DataBase Successfully");
   } catch (err) {
@@ -71,7 +78,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(async (id, done) => {
   const user = await User.findById(id).exec();
   // console.log(user);
-  done(err, user);
+  done(null, user);
 });
 
 passport.use(
