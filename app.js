@@ -36,7 +36,9 @@ app.use(passport.session());
 
 async function main() {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:2717/Users");
+    await mongoose.connect(
+      `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/?retryWrites=true&w=majority/Users`
+    );
     console.log("Connected to the DataBase Successfully");
   } catch (err) {
     console.log(err);
