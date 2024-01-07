@@ -1,5 +1,5 @@
 
-<img src="./public/assets/anya.png" alt="logo" />
+<img src="./public/assets/logo-color.png" alt="logo" />
 
 
 # Minddump
