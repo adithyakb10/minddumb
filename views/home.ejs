@@ -10,6 +10,11 @@
     <div class="container">
       <img src="<%= user.picture %>" alt="profile pic" />
       <p>Welcome, <%= user.name %></p>
+      <p id="messages">
+        <a href="/secrets"
+          >View the public messages <i class="fa-solid fa-envelope"></i> >></a
+        >
+      </p>
       <h1>What's on your mind?</h1>
       <form action="/submit" method="post">
         <textarea
@@ -36,29 +41,43 @@
       </form>
     </div>
     <p id="title">Your Messages!</p>
-    <p>Public Messages!</p>
-    <div class="thoughts">
-      <% user.messages.forEach(function(object){ %>
-      <div class="messages">
-        <div class="header">
-          <img src="<%= user.picture %>" alt="message" />
-          <p><%= object.formattedDate %></p>
+    <div class="message-section">
+      <div class="thoughts">
+        <p class="subtitle">Public Messages!</p>
+        <% messages = user.messages.reverse() %> <%
+        messages.forEach(function(object){ %>
+        <div class="messages">
+          <div class="header">
+            <img src="<%= user.picture %>" alt="message" />
+            <div class="user-section">
+              <p><%= user.name %></p>
+              <p><%= object.formattedDate %></p>
+            </div>
+          </div>
+          <p class="message"><%= object.message %></p>
         </div>
-        <p class="message"><%= object.message %></p>
+        <% }); %>
       </div>
-      <% }); %>
-    </div>
-    <p>Private Messages!</p>
-    <div class="thoughts">
-      <% user.privateMessages.forEach(function(object){ %>
-      <div class="messages">
-        <div class="header">
-          <img src="<%= user.picture %>" alt="message" />
-          <p><%= object.formattedDate %></p>
+      <div class="thoughts">
+        <p class="subtitle">Private Messages!</p>
+        <% privateMessages = user.privateMessages.reverse() %> <%
+        privateMessages.forEach(function(object){ %>
+        <div class="messages">
+          <div class="header">
+            <img src="<%= user.picture %>" alt="message" />
+            <p><%= object.formattedDate %></p>
+          </div>
+          <p class="message">
+            <span id="message-user"><%= user.name %><br /></span><%=
+            object.message %>
+          </p>
         </div>
-        <p class="message"><%= object.message %></p>
+        <% }); %>
       </div>
-      <% }); %>
     </div>
+    <script
+      src="https://kit.fontawesome.com/bda6fc51fa.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

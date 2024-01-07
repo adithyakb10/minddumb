@@ -50,7 +50,7 @@ textarea {
 }
 
 .container > p {
-  font-size: 23px;
+  font-size: 19px;
   margin-top: 10px;
 }
 
@@ -72,22 +72,34 @@ textarea {
   font-size: 25px;
 }
 
+.message-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px 200px;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
 .thoughts {
   margin-top: 25px;
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 50px 200px;
   margin-bottom: 10px;
 }
 
 .messages {
   padding-top: 10px;
+  padding-bottom: 10px;
   padding-left: 15px;
+  padding-right: 15px;
   border: 2px solid #36454f;
   width: 28vw;
+  max-width: 28vw;
   min-height: fit-content;
-  height: 20vh;
   border-radius: 10px;
+  margin-bottom: 50px;
 }
 
 .header {
@@ -110,6 +122,10 @@ textarea {
 .submit-box {
   display: flex;
   justify-content: space-between;
+}
+
+#message-user {
+  font-size: 20px;
 }
 
 /* css for rounded slider */

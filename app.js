@@ -1,7 +1,7 @@
 import express from "express";
 import ejs from "ejs";
 import session from "express-session";
-import MongoStore from "connect-mongo";
+// import MongoStore from "connect-mongo";
 import passport from "passport";
 import passportLocalMongoose from "passport-local-mongoose";
 import { Strategy } from "passport-google-oauth20";
@@ -25,13 +25,13 @@ app.use(
 
 app.use(
   session({
-    cookie: { maxAge: 86400000 },
+    // cookie: { maxAge: 86400000 },
     resave: false,
-    store: MongoStore.create({
-      mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true`,
-      collectionName: "sessions",
-      dbName: "Users",
-    }),
+    // store: MongoStore.create({
+    //   mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true`,
+    //   collectionName: "sessions",
+    //   dbName: "Users",
+    // }),
     secret: process.env.SECRET,
     saveUninitialized: false,
   })
@@ -45,7 +45,8 @@ app.use(passport.session());
 async function main() {
   try {
     await mongoose.connect(
-      `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true&w=majority`
+      // `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true&w=majority`
+      "mongodb://localhost:2717/"
     );
     console.log("Connected to the DataBase Successfully");
   } catch (err) {
@@ -73,13 +74,16 @@ passport.use(User.createStrategy());
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
-  console.log(user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
-  console.log(user);
-  done(err, user);
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    const user = await User.findById(id);
+    done(err, user);
+  }
 });
 
 passport.use(
@@ -87,7 +91,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "https://minddump.onrender.com/auth/google/minddump",
+      callbackURL: "http://localhost:3000/auth/google/minddump",
     },
     function (accessToken, refreshToken, profile, cb) {
       // console.log(profile);
@@ -111,10 +115,6 @@ app.get("/login", (req, res) => {
   res.render("login.ejs");
 });
 
-app.get("/secrets", (req, res) => {
-  res.render("secrets.ejs");
-});
-
 app.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     const user = await User.findById(req.user.id).exec();
@@ -127,7 +127,9 @@ app.get("/", async (req, res) => {
 //Auth Routes
 app.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile"] })
+  passport.authenticate("google", {
+    scope: ["profile"],
+  })
 );
 
 app.get(
@@ -138,6 +140,21 @@ app.get(
     res.redirect("/");
   }
 );
+
+app.get("/secrets", async (req, res) => {
+  console.log("hello");
+  try {
+    console.log("hello");
+    const users = await User.find({ messages: { $ne: null } }).exec();
+    console.log(users);
+    if (users) {
+      console.log(users);
+      res.render("secrets.ejs", { users: users });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.post("/submit", async (req, res) => {
   try {
@@ -164,7 +181,7 @@ app.post("/submit", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(port, "192.168.1.8", () => {
   console.log(`App listening on port ${port}`);
   main();
 });
