@@ -64,7 +64,10 @@ https://github.com/forcedotcom/cli/issues/2535#issuecomment-1786252750
 
 ## Demo
 
-https://minddump.onrender.com
+Checkout the live demo : https://minddump.onrender.com
+
+Preview : 
+<img src="./public/assets/preview.gif" />
 
 ## Acknowledgements
 
