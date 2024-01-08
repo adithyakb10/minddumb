@@ -1,5 +1,5 @@
 
-<img src="./public/assets/logo-color.png" alt="logo" />
+<img width="500pxpx" src="./public/assets/logo-color.png" alt="logo" />
 
 
 # Minddump
