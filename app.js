@@ -25,7 +25,7 @@ app.use(
 
 app.use(
   session({
-    // cookie: { maxAge: 86400000 },
+    // cookie: { maxAge: 86400000, name: },
     resave: false,
     // store: MongoStore.create({
     //   mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true`,
@@ -113,6 +113,20 @@ passport.use(
 // Routes
 app.get("/login", (req, res) => {
   res.render("login.ejs");
+});
+
+app.get("/logout", (req, res) => {
+  // Destroy the session on the server
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      // Clear the session cookie on the client-side
+      res.clearCookie("connect.sid"); // Use the custom session cookie name
+      res.redirect("/login"); // Redirect to the login page or any other page after logout
+    }
+  });
 });
 
 app.get("/", async (req, res) => {
