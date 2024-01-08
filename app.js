@@ -1,7 +1,7 @@
 import express from "express";
 import ejs from "ejs";
 import session from "express-session";
-// import MongoStore from "connect-mongo";
+import MongoStore from "connect-mongo";
 import passport from "passport";
 import passportLocalMongoose from "passport-local-mongoose";
 import { Strategy } from "passport-google-oauth20";
@@ -25,13 +25,13 @@ app.use(
 
 app.use(
   session({
-    // cookie: { maxAge: 86400000, name: },
+    cookie: { maxAge: 86400000 },
     resave: false,
-    // store: MongoStore.create({
-    //   mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true`,
-    //   collectionName: "sessions",
-    //   dbName: "Users",
-    // }),
+    store: MongoStore.create({
+      mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true`,
+      collectionName: "sessions",
+      dbName: "Users",
+    }),
     secret: process.env.SECRET,
     saveUninitialized: false,
   })
@@ -45,8 +45,8 @@ app.use(passport.session());
 async function main() {
   try {
     await mongoose.connect(
-      // `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true&w=majority`
-      "mongodb://localhost:2717/"
+      `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.eyuetfl.mongodb.net/Users?retryWrites=true&w=majority`
+      // "mongodb://localhost:2717/"
     );
     console.log("Connected to the DataBase Successfully");
   } catch (err) {
@@ -91,7 +91,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/google/minddump",
+      callbackURL: "https://minddump.onrender.com:3000/auth/google/minddump",
     },
     function (accessToken, refreshToken, profile, cb) {
       // console.log(profile);
