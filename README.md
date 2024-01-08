@@ -62,11 +62,9 @@ https://github.com/forcedotcom/cli/issues/2535#issuecomment-1786252750
 
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/adithyakb10/minddump/main)
 
+## Demo
 
-
-
-
-
+https://minddump.onrender.com
 
 ## Acknowledgements
 
@@ -87,7 +85,5 @@ PRs are welcome
 [MIT](https://choosealicense.com/licenses/mit/)
 
 
-## Demo
 
-Insert gif or link to demo
 
