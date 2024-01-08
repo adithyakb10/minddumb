@@ -14,12 +14,53 @@ html {
 }
 
 body {
-  padding-top: 100px;
   min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+nav {
+  display: flex;
+  margin-bottom: 50px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.logout {
+  align-items: center;
+  padding-left: 15px;
+}
+
+.logout i {
+  padding-right: 8px;
+}
+
+.logout a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.logout a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+
+nav img {
+  width: 39px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 .container {
@@ -29,6 +70,11 @@ body {
   justify-content: centre;
   position: relative;
   top: -30px;
+}
+
+#messages a {
+  color: rgb(90, 24, 24);
+  font-size: 19px;
 }
 
 textarea {
@@ -171,4 +217,18 @@ textarea {
 
 .switch .look:checked + label {
   background-color: #2196f3;
+}
+
+@media only screen and (max-width: 480px) {
+  .message-section {
+    display: flex;
+    flex-direction: column;
+  }
+  .messages {
+    width: 300px;
+    max-width: none;
+  }
+  .subtitle {
+    font-size: 18px;
+  }
 }

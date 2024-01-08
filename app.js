@@ -181,7 +181,7 @@ app.post("/submit", async (req, res) => {
   }
 });
 
-app.listen(port, "192.168.1.8", () => {
+app.listen(port, () => {
   console.log(`App listening on port ${port}`);
   main();
 });

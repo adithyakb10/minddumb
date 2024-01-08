@@ -7,6 +7,17 @@
     <title>Thoughts</title>
   </head>
   <body>
+    <nav>
+      <div class="logout">
+        <a href="/logout"
+          ><i class="fa-solid fa-right-from-bracket"></i>Logout</a
+        >
+      </div>
+      <div class="user-info">
+        <img src="<%= user.picture %>" alt="" />
+        <p><%= user.name %></p>
+      </div>
+    </nav>
     <div class="container">
       <img src="<%= user.picture %>" alt="profile pic" />
       <p>Welcome, <%= user.name %></p>
@@ -65,12 +76,12 @@
         <div class="messages">
           <div class="header">
             <img src="<%= user.picture %>" alt="message" />
-            <p><%= object.formattedDate %></p>
+            <div class="user-section">
+              <p><%= user.name %></p>
+              <p><%= object.formattedDate %></p>
+            </div>
           </div>
-          <p class="message">
-            <span id="message-user"><%= user.name %><br /></span><%=
-            object.message %>
-          </p>
+          <p class="message"><%= object.message %></p>
         </div>
         <% }); %>
       </div>
