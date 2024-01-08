@@ -1,9 +1,10 @@
-
-<img width="500pxpx" src="./public/assets/logo-color.png" alt="logo" />
+<p align="center">
+  <img style="display: block; margin: auto auto; " width="500px" src="./public/assets/logo-color.png" alt="logo" />
+</p
 
 
 # Minddump
-
+>
 A place to dump your thoughts and worries. Messages can be private and public allowing u to choose that to share with other and what to be private. Use it as your personal diary or maybe just a place to vent out 
 
 
