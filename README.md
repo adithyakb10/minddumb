@@ -1,5 +1,5 @@
 <p align="center">
-  <img style="display: block; margin: auto auto; " width="500px" src="./public/assets/logo-color.png" alt="logo" />
+  <img width="500px" src="./public/assets/logo-color.png" alt="logo" />
 </p>
 
 
